@@ -102,6 +102,7 @@ jobs:
           fail-build: false
           sbom: "/tmp/${{ github.event.repository.name }}.cyclonedx-sbom.json"
           output-format: sarif
+          cache-db: true
 
       - name: Upload Anchore scan SARIF report
         uses: github/codeql-action/upload-sarif@4e94bd11f71e507f7f87df81788dff88d1dacbfb # v3.29.5

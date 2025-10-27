@@ -91,7 +91,7 @@ jobs:
       - name: Generate SBOM and upload dependency results
         uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
         with:
-          image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:nightly
+          image: ${{ env.DOCKER_METADATA_OUTPUT_TAGS }}
           artifact-name: "${{ github.event.repository.name }}.cyclonedx-sbom.json"
           output-file: "/tmp/${{ github.event.repository.name }}.cyclonedx-sbom.json"
           dependency-snapshot: true

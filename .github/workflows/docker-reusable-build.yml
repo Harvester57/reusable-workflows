@@ -86,6 +86,7 @@ jobs:
           push-to-registry: true
 
       - name: Generate SBOM and upload dependency results
+        if: github.event_name != 'pull_request'
         uses: anchore/sbom-action@8e94d75ddd33f69f691467e42275782e4bfefe84 # v0.20.9
         with:
           image: ${{ steps.meta.outputs.tags }}
@@ -96,6 +97,7 @@ jobs:
           upload-artifact: true
 
       - name: Scan SBOM
+        if: github.event_name != 'pull_request'
         uses: anchore/scan-action@568b89d27fc18c60e56937bff480c91c772cd993 # v7.1.0
         id: scan
         with:
@@ -105,6 +107,7 @@ jobs:
           cache-db: true
 
       - name: Upload Anchore scan SARIF report
+        if: github.event_name != 'pull_request'
         uses: github/codeql-action/upload-sarif@4e94bd11f71e507f7f87df81788dff88d1dacbfb # v3.29.5
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}

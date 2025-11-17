@@ -58,7 +58,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          no-cache: ${{ github.event_name != 'pull_request' }}
+          no-cache: ${{ github.event_name = 'pull_request' }} # Do not use cache on PRs
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

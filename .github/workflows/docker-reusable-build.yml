@@ -113,7 +113,7 @@ jobs:
           fail-build: false
           sbom: "/tmp/${{ github.event.repository.name }}.cyclonedx-sbom.json"
           output-format: sarif
-          cache-db: true
+          cache-db: false
           by-cve: true
 
       - name: Upload Anchore scan SARIF report

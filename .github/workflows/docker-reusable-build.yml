@@ -87,7 +87,7 @@ jobs:
 
       - name: Attest
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/attest@c32b4b8b198b65d0bd9d63490e847ff7b53989d4
+        uses: actions/attest@c32b4b8b198b65d0bd9d63490e847ff7b53989d4 # v4.0.0
         id: attest
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}

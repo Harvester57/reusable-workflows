@@ -55,6 +55,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: Set IMAGE to first tag
+        run: |
+          echo "IMAGE=$(echo '${{ steps.meta.outputs.tags }}' | head -n1)" >> $GITHUB_ENV
+
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -98,7 +103,7 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: anchore/sbom-action@17ae1740179002c89186b61233e0f892c3118b11 # v0.23.0
         with:
-          image: ${{ steps.meta.outputs.tags }}
+          image: ${{ env.IMAGE }}
           artifact-name: "${{ github.event.repository.name }}.cyclonedx-sbom.json"
           output-file: "/tmp/${{ github.event.repository.name }}.cyclonedx-sbom.json"
           dependency-snapshot: true

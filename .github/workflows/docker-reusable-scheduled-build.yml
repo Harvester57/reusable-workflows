@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Harden the runner (audit mode)
-        uses: step-security/harden-runner@58077d3c7e43986b6b15fba718e8ea69e387dfcc # v2.15.1
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
 
@@ -27,7 +27,7 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
@@ -41,7 +41,7 @@ jobs:
       # https://github.com/docker/login-action
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -60,7 +60,7 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7.2.0
         with:
           sbom: true
           provenance: mode=max
@@ -95,7 +95,7 @@ jobs:
           push-to-registry: true
 
       - name: Generate SBOM and upload dependency results
-        uses: anchore/sbom-action@17ae1740179002c89186b61233e0f892c3118b11 # v0.23.0
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
         with:
           image: ${{ steps.meta.outputs.tags }}
           artifact-name: "${{ github.event.repository.name }}.cyclonedx-sbom.json"
@@ -105,7 +105,7 @@ jobs:
           upload-artifact: true
 
       - name: Scan SBOM
-        uses: anchore/scan-action@7037fa011853d5a11690026fb85feee79f4c946c # v7.3.2
+        uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
         id: scan
         with:
           fail-build: false
@@ -116,6 +116,6 @@ jobs:
           only-fixed: true
 
       - name: Upload Anchore scan SARIF report
-        uses: github/codeql-action/upload-sarif@0d579ffd059c29b07949a3cce3983f0780820c98 # v3.29.5
+        uses: github/codeql-action/upload-sarif@9e0d7b8d25671d64c341c19c0152d693099fb5ba # v3.29.5
         with:
           sarif_file: ${{ steps.scan.outputs.sarif }}
